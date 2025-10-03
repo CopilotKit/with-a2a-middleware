@@ -169,8 +169,9 @@ class AnalysisAgentExecutor(AgentExecutor):
         context: RequestContext,
         event_queue: EventQueue,
     ) -> None:
+        query = context.get_user_input()
         session_id = getattr(context, 'context_id', 'default_session')
-        final_content = await self.agent.invoke(context.message, session_id)
+        final_content = await self.agent.invoke(query, session_id)
         await event_queue.enqueue_event(new_agent_text_message(final_content))
 
     async def cancel(
